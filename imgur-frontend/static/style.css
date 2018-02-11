@@ -1,0 +1,63 @@
+body {
+    background-color: #F0F2F3;
+}
+
+nav {
+    background-color: #232A35;
+    border: none;
+    box-shadow: none;
+    margin-bottom: 40px;
+}
+nav .brand-logo {
+    margin-left: 10px;
+}
+nav i {
+    margin-right: 5px;
+    font-size: 14px;
+}
+.nav-content {
+    background-color: #fff;
+    color: #99A3AA;
+    border-bottom: 1px solid #E4E6E7;
+    margin: 0;
+}
+.nav-content ul li a {
+    color: #99A3AA !important;
+}
+.nav-content ul li a:hover {
+    background-color: rgba(0,0,0,0.2) !important;
+    color: white !important;
+}
+.clear {
+    clear: both;
+}
+
+.img-card {
+    margin-top: 20px;
+    background-color: #fff;
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 0px 5px #E4E6E7;
+    border-radius: 5px;
+}
+
+.img-card img {
+    width: 100%;
+    height: 200px;
+}
+
+.img-card .info {
+    padding: 20px 30px;
+}
+.img-card .info h4 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+.img-card .info p {
+    font-size: 16px;
+    font-weight: 200;
+    color: #7D8FA3;
+    margin: 0;
+    padding: 0;
+}
