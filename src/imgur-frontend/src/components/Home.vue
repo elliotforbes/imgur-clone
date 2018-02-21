@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
+import jwtDecode from 'jwt-decode'
 
 export default {
   name: 'Home',
@@ -26,19 +27,21 @@ export default {
     }
   },
   created() {
-    var config = {
-        headers: {'Content-Type': 'application/json'}
-    };
-    console.log("Attempting to hit api");
-    axios.get("https://rvv1a9to8j.execute-api.eu-west-1.amazonaws.com/dev/list", config)
-        .then((response) => {
-            console.log(response);
-            this.latest = response.data;
+    this.$cognitoAuth.isAuthenticated((err, loggedIn) => {
+        if (err) {
+            console.err("Home: Couldn't get the session:", err, err.stack)
+            return
+        } else {
+            console.log("Currently Logged In")
+            console.log(loggedIn)
+        }
+        axios.get("https://rvv1a9to8j.execute-api.eu-west-1.amazonaws.com/dev/list")
+            .then((response) => {
+                console.log(response);
+                this.latest = response.data;
+            }).catch(err => { console.log(err); })
         })
-        .catch(err => {
-            console.log(err);
-        });
-  }
+    }
 }
 </script>
 

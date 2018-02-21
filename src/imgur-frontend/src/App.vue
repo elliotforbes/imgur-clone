@@ -6,6 +6,7 @@
           <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="https://github.com/elliotforbes/imgur-clone"> View On Github</a></li>
             <li><router-link to="Login">Login</router-link></li>
+            <li><router-link to="Logout">Logout</router-link></li>
           <li class="tab"><router-link :to="{ name: 'Profile'}"><i class="ion ion-android-person"></i> My Profile</router-link></li>
           <li class="tab"><router-link :to="{ name: 'Upload'}"><i class="ion ion-android-person"></i> Upload</router-link></li>
           </ul>

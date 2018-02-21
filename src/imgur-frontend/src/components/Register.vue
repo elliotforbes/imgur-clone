@@ -1,21 +1,50 @@
 <template>
     <div class="login-box">
         <h4>Register</h4>
+        <div class="card-panel red darken-2" v-if="error != null"><span class="white-text">{{ error.message }}</span></div>
         <p>Don't have an account? Register for one using your Google account</p>
-        <div class="center-align">
-            <button @click="authenticate('Google')" class="btn btn-large"><i class="ion ion-social-google-outline"></i> Google</button>
-        </div>
+         <form @submit.prevent="authenticate">
+            <div class="input-field">
+                <input id="username" type="text" class="validate" v-model="username" required>
+                <label for="username">Username</label>
+            </div>
+            <div class="input-field">
+                <input id="email" type="text" class="validate" v-model="email" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="input-field">
+                <input id="password" type="password" class="validate" v-model="pass" required>
+                <label for="password">Password</label>
+            </div>
+            <div class="center-align">
+                <button class="btn btn-default btn-large">Register</button>
+            </div>
+        </form>
     </div>
 </template>
 
 <script>
-import auth from '../services/auth'
 
 export default {
   name: 'Login',
+  data() {
+      return {
+          username: '',
+          pass: '',
+          email: '',
+          error: null
+      }
+  },
   methods: {
-    authenticate (provider) {
-      return auth.authenticate(provider)
+    authenticate () {
+        this.$cognitoAuth.signup(this.username, this.email, this.pass, (err, result) => {
+            if (err) {
+                this.error = err
+            } else {
+                console.log('Signup Successful:', result)
+                this.$router.replace({path: '/home', query: {username: this.username}})
+            }
+        })
     }
   }
 }

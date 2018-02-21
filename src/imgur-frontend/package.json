@@ -11,6 +11,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "amazon-cognito-identity-js": "^2.0.0",
+    "aws-sdk": "^2.197.0",
     "axios": "^0.17.1",
     "dropzone": "^5.3.0",
     "jwt-decode": "^2.2.0",

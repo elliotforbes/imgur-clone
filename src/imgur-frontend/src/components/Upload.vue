@@ -52,7 +52,9 @@ export default {
       uploadedFiles: [],
       uploadError: null,
       currentStatus: null,
-      uploadFieldName: "photos"
+      uploadFieldName: "photos",
+      fileCount: 0,
+      user: {}
     };
   },
   computed: {
@@ -68,6 +70,9 @@ export default {
     isFailed() {
       return this.currentStatus === STATUS_FAILED;
     }
+  },
+  created: function() {
+    this.user = this.$cognitoAuth.getCurrentUser();
   },
   methods: {
     reset() {
@@ -97,12 +102,10 @@ export default {
       if (!fileList.length) return;
 
       // append the files to FormData
-      Array.from(Array(fileList.length).keys()).map(x => {
-        formData.append(fieldName, fileList[x], fileList[x].name);
-      });
-
-      // save it
+      // Array.from(Array(fileList.length).keys()).map(x => {
+      formData.append("image", fileList[0], fileList[0].name)
       this.save(formData);
+      // save it
     }
   },
   mounted() {
@@ -115,6 +118,9 @@ export default {
 .upload-wrapper {
   background-color: white;
   padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #E4E6E7;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.4);
 }
 .upload-wrapper h4 {
   font-size: 22px;

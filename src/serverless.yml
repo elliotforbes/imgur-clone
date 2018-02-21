@@ -26,14 +26,19 @@ provider:
       Resource: "arn:aws:s3:::${self:custom.bucket}/*"
 
 functions:
-  upload:
-    handler: functions/upload.upload
-    events:
-      - http:
-          path: upload
-          method: post
-          cors: true
-  
+  # uploadjs:
+  #   handler: functions/upload-node.upload
+  #   runtime: nodejs6.10
+  #   events:
+  #     - http:
+  #         path: upload-node
+  #         method: post
+  #         cors: true
+  #         authorizer:
+  #           arn: arn:aws:cognito-idp:eu-west-1:853957954650:userpool/eu-west-1_9IBAarCx9
+  #           identitySource: method.request.header.Authorization
+  #           type: token
+
   list:
     handler: functions/list.list
     events:

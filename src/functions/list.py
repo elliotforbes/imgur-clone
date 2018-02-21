@@ -18,8 +18,8 @@ def list(event, context):
         "statusCode": 200,
         "body": json.dumps(results['Items'], cls=DecimalEncoder),
         'headers': {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         },
     }
 

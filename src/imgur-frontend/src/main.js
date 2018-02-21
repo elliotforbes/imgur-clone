@@ -3,9 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import VueResource from 'vue-resource'
+import cognitoAuth from './cognito'
 import router from './router'
-import store from './store/index.js'
-
 
 Vue.config.productionTip = false
 Vue.use(VueResource)
@@ -14,6 +13,7 @@ Vue.use(VueResource)
 new Vue({
   el: '#app',
   router,
+  cognitoAuth,
   components: { App },
   template: '<App/>'
 })
