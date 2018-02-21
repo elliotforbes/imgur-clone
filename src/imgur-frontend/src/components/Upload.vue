@@ -2,43 +2,22 @@
     <div class="container">
         <div class="upload-wrapper">
             <h4>Upload Route</h4>
+            {{ error }}
             <div class="upload-form">
-                <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-                    <div class="dropbox">
-                        <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length" accept="image/*" class="input-file">
-                    </div>
-                    <br>
-                    <button class="btn btn-default"><i class="ion ion-upload"></i> Upload</button>
-                    <p v-if="isInitial">
-                        Drag your file(s) here to begin<br> or click to browse
-                    </p>
-                    <p v-if="isSaving">
-                        Uploading {{ fileCount }} files...
-                    </p>
-                </form>
+                <vue-dropzone 
+                    ref="myVueDropzone" 
+                    id="dropzone" 
+                    v-on:vdropzone-file-added="sendingEvent"
+                    :options="dropzoneOptions"></vue-dropzone>
             </div>
-        </div>
-         <!--SUCCESS-->
-        <div v-if="isSuccess">
-            <h2>Uploaded {{ uploadedFiles.length }} file(s) successfully.</h2>
-            <p><a href="javascript:void(0)" @click="reset()">Upload again</a></p>
-            <ul class="list-unstyled">
-                <li v-for="item in uploadedFiles">
-                <img :src="item.url" class="img-responsive img-thumbnail" :alt="item.originalName">
-                </li>
-            </ul>
-        </div>
-        <!--FAILED-->
-        <div v-if="isFailed">
-            <h2>Uploaded failed.</h2>
-            <p><a href="javascript:void(0)" @click="reset()">Try again</a></p>
-            <pre>{{ uploadError }}</pre>
         </div>
     </div>
 </template>
 
 <script>
 import { upload } from "@/services/file-upload.service";
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.css'
 
 const STATUS_INITIAL = 0,
   STATUS_SAVING = 1,
@@ -46,70 +25,54 @@ const STATUS_INITIAL = 0,
   STATUS_FAILED = 3;
 
 export default {
-  name: "app",
-  data() {
+  name: "Upload",
+  components: {
+    vueDropzone: vue2Dropzone
+  },
+  data: function () {
     return {
-      uploadedFiles: [],
-      uploadError: null,
-      currentStatus: null,
-      uploadFieldName: "photos",
-      fileCount: 0,
-      user: {}
-    };
-  },
-  computed: {
-    isInitial() {
-      return this.currentStatus === STATUS_INITIAL;
-    },
-    isSaving() {
-      return this.currentStatus === STATUS_SAVING;
-    },
-    isSuccess() {
-      return this.currentStatus === STATUS_SUCCESS;
-    },
-    isFailed() {
-      return this.currentStatus === STATUS_FAILED;
+        error: '',
+        signurl: '',
+        dropzoneOptions: {
+            url: 'https://httpbin.org/post',
+            thumbnailWidth: 200,
+            addRemoveLinks: true,
+            autoProcessQueue: false
+        },
+        awss3: {
+            signingURL: 'http://aws-direct-s3.dev/',
+            headers: {},
+            params : {}
+        },
     }
-  },
-  created: function() {
-    this.user = this.$cognitoAuth.getCurrentUser();
   },
   methods: {
-    reset() {
-      // reset form to initial state
-      this.currentStatus = STATUS_INITIAL;
-      this.uploadedFiles = [];
-      this.uploadError = null;
+    sendingEvent(file, xhr, formData) {
+
+        upload(file)
+            .then((success) => { console.log("FUCK YES") })
+            .catch((err) => { console.log(err); })
+    
     },
-    save(formData) {
-      // upload data to the server
-      this.currentStatus = STATUS_SAVING;
-
-      upload(formData)
-        .then(x => {
-          this.uploadedFiles = [].concat(x);
-          this.currentStatus = STATUS_SUCCESS;
-        })
-        .catch(err => {
-          this.uploadError = err.response;
-          this.currentStatus = STATUS_FAILED;
-        });
+    s3UploadSuccess(location) {
+      console.log(location)
     },
-    filesChange(fieldName, fileList) {
-      // handle file changes
-      const formData = new FormData();
-
-      if (!fileList.length) return;
-
-      // append the files to FormData
-      // Array.from(Array(fileList.length).keys()).map(x => {
-      formData.append("image", fileList[0], fileList[0].name)
-      this.save(formData);
-      // save it
+    uploadFiles() {
+        console.log("Hit");
+      if (this.signurl) {
+        this.$refs.myVueDropzone.setAWSSigningURL(this.signurl);
+        this.$refs.myVueDropzone.processQueue();
+      }
+      else {
+        this.$refs.urlsigner.focus();
+        alert("Enter your signing URL");
+      }
     }
   },
-  mounted() {
-    this.reset();
+  watch: {
+    fileAdded() {
+        console.log("success");
+    },
   }
 };
 </script>

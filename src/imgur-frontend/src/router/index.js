@@ -33,7 +33,7 @@ export default new Router({
     { path: '/home', name: 'Home', component: Home },
     { path: '/login', name: 'Login', component: Login },
     { path: '/profile', name: 'Profile', component: Profile, beforeEnter: requireAuth },
-    { path: '/upload', name: 'Upload', component: Upload, beforeEnter: requireAuth },
+    { path: '/upload', name: 'Upload', component: Upload/*, beforeEnter: requireAuth*/ },
     { path: '/register', name: 'Register', component: Register },
     { path: '/logout', beforeEnter: logout }
   ]
