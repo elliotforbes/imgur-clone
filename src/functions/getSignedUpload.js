@@ -8,7 +8,8 @@ module.exports.requestUploadURL = (event, context, callback) => {
       Bucket: 'imgur-serverless',
       Key:  params.name,
       ContentType: params.type,
-      Expires: 3600
+      Expires: 3600,
+      ACL: 'public-read'
     };
   
     var uploadURL = s3.getSignedUrl('putObject', s3Params);

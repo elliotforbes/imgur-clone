@@ -1,5 +1,6 @@
 import * as axios from 'axios'
 import CognitoAuth from '@/cognito'
+import config from '@/config'
 
 function upload(file) {
 
@@ -7,37 +8,13 @@ function upload(file) {
         console.log(result);
         if (err) { console.log(err) } 
         else {
-            const url = `https://rvv1a9to8j.execute-api.eu-west-1.amazonaws.com/dev/upload-node`;
+            const url = config.s3SignedUrl;
             axios.defaults.headers.common['Authorization'] = result;
-            return axios({
-                method: 'post',
-                url: url, 
-                data: { name: file.name, type: file.type }
-            })
+            return axios({ method: 'post', url: url, data: { name: file.name, type: file.type }})
                 .then(x => {
-                    console.log(x.data.uploadURL)
-
-                    var options = {
-                        headers: {
-                            'Content-Type': file.type
-                        }
-                    }
+                    var options = { headers: { 'Content-Type': file.type } }
                     delete axios.defaults.headers.common['Authorization'];
-                    // return axios.put(x.data.uploadURL, file, options)
-                    // return axios.put(x.data.uploadURL, file, options)
-
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('PUT', x.data.uploadURL, true);
-                    xhr.setRequestHeader('Content-Type', file.type);
-                    xhr.onload = () => {
-                    if (xhr.status === 200) {
-                        console.log("Hi")
-                    }
-                    };
-                    xhr.onerror = () => {
-                    // error...
-                    };
-                    xhr.send(file); 
+                    return axios.put(x.data.uploadURL, file, options)
                 })
         }
     })

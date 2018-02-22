@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="upload-wrapper">
-            <h4>Upload Route</h4>
+            <h4>Upload Images</h4>
             {{ error }}
             <div class="upload-form">
                 <vue-dropzone 

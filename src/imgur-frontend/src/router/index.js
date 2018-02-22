@@ -5,6 +5,7 @@ import Login from '@/components/Login'
 import Profile from '@/components/Profile'
 import Upload from '@/components/Upload'
 import Register from '@/components/Register'
+import Confirm from '@/components/confirm'
 import cognitoAuth from '@/cognito'
 Vue.use(Router)
 
@@ -32,8 +33,9 @@ export default new Router({
     { path: '/', component: Home },
     { path: '/home', name: 'Home', component: Home },
     { path: '/login', name: 'Login', component: Login },
+    { path: '/confirm', name: 'Confirm', component: Confirm },
     { path: '/profile', name: 'Profile', component: Profile, beforeEnter: requireAuth },
-    { path: '/upload', name: 'Upload', component: Upload/*, beforeEnter: requireAuth*/ },
+    { path: '/upload', name: 'Upload', component: Upload, beforeEnter: requireAuth },
     { path: '/register', name: 'Register', component: Register },
     { path: '/logout', beforeEnter: logout }
   ]

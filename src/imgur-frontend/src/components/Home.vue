@@ -4,10 +4,10 @@
             <div v-for="post of latest" class="col l3">
                 <div class="img-card">
                     <div class="img">
-                        <img v-bind:src="post.location" alt="">
+                        <img v-bind:src="'https://s3-eu-west-1.amazonaws.com/imgur-serverless/' + post" alt="">
                     </div>
                     <div class="info">
-                        <h4>{{ post.key }}</h4>
+                        <h4>{{ post }}</h4>
                     </div>
                 </div>
             </div>

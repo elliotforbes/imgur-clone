@@ -107,7 +107,8 @@
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "s3:PutObject"
+                    "s3:PutObject",
+                    "S3:PutObjectAcl"
                   ],
                   "Resource": "arn:aws:s3:::imgur-serverless/*"
                 }
@@ -136,7 +137,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/imgur-clone-functions/dev/1519252634568-2018-02-21T22:37:14.568Z/imgur-clone-functions.zip"
+          "S3Key": "serverless/imgur-clone-functions/dev/1519311563044-2018-02-22T14:59:23.044Z/imgur-clone-functions.zip"
         },
         "FunctionName": "imgur-clone-functions-dev-uploadjs",
         "Handler": "getSignedUpload.requestUploadURL",
@@ -155,14 +156,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "UploadjsLambdaVersionZoin1qFfMWw9yqDXVHpK4txb6gUdTCapbjylotviqUc": {
+    "UploadjsLambdaVersion1DVKbQLLRq8Hd4dnz6zW2cJjTh7tK1AtHlIP9yalDQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UploadjsLambdaFunction"
         },
-        "CodeSha256": "4B8ui4DYPGJOZP9ZKmI+quZZpNNO9L+JsKAV96/aZow="
+        "CodeSha256": "W6BM2gxfBjEixIi2W9K/LwtEXmHTia6s9QWoHZiQa/Y="
       }
     },
     "ListLambdaFunction": {
@@ -172,7 +173,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/imgur-clone-functions/dev/1519252634568-2018-02-21T22:37:14.568Z/imgur-clone-functions.zip"
+          "S3Key": "serverless/imgur-clone-functions/dev/1519311563044-2018-02-22T14:59:23.044Z/imgur-clone-functions.zip"
         },
         "FunctionName": "imgur-clone-functions-dev-list",
         "Handler": "list.list",
@@ -191,14 +192,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "ListLambdaVersionBJNlVPpfLNb8PrCU2DmZF9RIPwEbSup2mtQyaFX5hk": {
+    "ListLambdaVersion9aD9WLxWUtP3HvWxZHJ5V09yzTsl39LjWRY9q70M7Gg": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ListLambdaFunction"
         },
-        "CodeSha256": "4B8ui4DYPGJOZP9ZKmI+quZZpNNO9L+JsKAV96/aZow="
+        "CodeSha256": "W6BM2gxfBjEixIi2W9K/LwtEXmHTia6s9QWoHZiQa/Y="
       }
     },
     "SingleLambdaFunction": {
@@ -208,7 +209,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/imgur-clone-functions/dev/1519252634568-2018-02-21T22:37:14.568Z/imgur-clone-functions.zip"
+          "S3Key": "serverless/imgur-clone-functions/dev/1519311563044-2018-02-22T14:59:23.044Z/imgur-clone-functions.zip"
         },
         "FunctionName": "imgur-clone-functions-dev-single",
         "Handler": "single.single",
@@ -227,14 +228,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "SingleLambdaVersionvt8vRo4HXjJNOQVmgHewt8LbZlfTGrPdhxIQumUEqmc": {
+    "SingleLambdaVersion83GIOYoJmwqJ2mySrz0FBNIlSccyD9RUrhAGF0IXqI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SingleLambdaFunction"
         },
-        "CodeSha256": "4B8ui4DYPGJOZP9ZKmI+quZZpNNO9L+JsKAV96/aZow="
+        "CodeSha256": "W6BM2gxfBjEixIi2W9K/LwtEXmHTia6s9QWoHZiQa/Y="
       }
     },
     "ApiGatewayRestApi": {
@@ -567,7 +568,7 @@
         ]
       }
     },
-    "ApiGatewayDeployment1519252634584": {
+    "ApiGatewayDeployment1519311563060": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -690,19 +691,19 @@
     "UploadjsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UploadjsLambdaVersionZoin1qFfMWw9yqDXVHpK4txb6gUdTCapbjylotviqUc"
+        "Ref": "UploadjsLambdaVersion1DVKbQLLRq8Hd4dnz6zW2cJjTh7tK1AtHlIP9yalDQ"
       }
     },
     "ListLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ListLambdaVersionBJNlVPpfLNb8PrCU2DmZF9RIPwEbSup2mtQyaFX5hk"
+        "Ref": "ListLambdaVersion9aD9WLxWUtP3HvWxZHJ5V09yzTsl39LjWRY9q70M7Gg"
       }
     },
     "SingleLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SingleLambdaVersionvt8vRo4HXjJNOQVmgHewt8LbZlfTGrPdhxIQumUEqmc"
+        "Ref": "SingleLambdaVersion83GIOYoJmwqJ2mySrz0FBNIlSccyD9RUrhAGF0IXqI"
       }
     },
     "ServiceEndpoint": {

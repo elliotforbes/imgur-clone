@@ -23,6 +23,7 @@ provider:
     - Effect: Allow
       Action:
         - s3:PutObject
+        - S3:PutObjectAcl
       Resource: "arn:aws:s3:::${self:custom.bucket}/*"
 
 functions:

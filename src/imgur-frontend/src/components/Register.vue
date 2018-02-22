@@ -41,8 +41,7 @@ export default {
             if (err) {
                 this.error = err
             } else {
-                console.log('Signup Successful:', result)
-                this.$router.replace({path: '/home', query: {username: this.username}})
+                this.$router.replace({path: '/confirm'})
             }
         })
     }

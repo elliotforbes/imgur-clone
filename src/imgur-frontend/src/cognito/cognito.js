@@ -82,6 +82,14 @@ export default class CognitoAuth {
         return this.userPool.getCurrentUser()
     }
 
+    confirmRegistration (username, code, cb) {
+        let cognitoUser = new CognitoUser({
+            Username: username,
+            Pool: this.userPool
+        })
+        cognitoUser.confirmRegistration(code, true, cb)
+    }
+
     /**
      * Logout of your cognito session.
      */
