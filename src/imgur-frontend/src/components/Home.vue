@@ -4,10 +4,12 @@
             <div v-for="post of latest" class="col l3">
                 <div class="img-card">
                     <div class="img">
-                        <img v-bind:src="'https://s3-eu-west-1.amazonaws.com/imgur-serverless/' + post" alt="">
+                        <router-link :to="`/img/${post.key}`">
+                        <img v-bind:src="'https://s3-eu-west-1.amazonaws.com/imgur-serverless-v2/' + post.location" alt="">
+                        </router-link>
                     </div>
                     <div class="info">
-                        <h4>{{ post }}</h4>
+                        <div class="chip" v-for="label of post.labels">{{ label }}</div>
                     </div>
                 </div>
             </div>
@@ -47,4 +49,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>

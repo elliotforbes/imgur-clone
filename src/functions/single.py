@@ -1,32 +1,23 @@
 import boto3
-from imgur import decimalencoder
+from decimalencoder import DecimalEncoder
 import json
+from boto3.dynamodb.conditions import Key, Attr
 
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb', 'eu-west-1')
 
 def single(event, context):
     table = dynamodb.Table("img-posts")
-    # fetch todo from the database
+    key = event['queryStringParameters']['key']
 
-    print(event)
-    print(event['queryStringParameters'])
-    print(event['queryStringParameters']['key'])
-
-    result = table.get_item(
-        Key={
-            'key': event['queryStringParameters']['key']
-        }
-    )
-
-    print(result)
-    # create a response
+    response = table.get_item(Item={'key': key })
+    
     response = {
         "statusCode": 200,
-        "body": json.dumps(result['Item'],
-                           cls=decimalencoder.DecimalEncoder),
+        "body": json.dumps(response['Item'], cls=DecimalEncoder),
         'headers': {
             'Access-Control-Allow-Origin': '*'
         },
     }
 
     return response
+

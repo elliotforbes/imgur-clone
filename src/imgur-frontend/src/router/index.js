@@ -6,6 +6,7 @@ import Profile from '@/components/Profile'
 import Upload from '@/components/Upload'
 import Register from '@/components/Register'
 import Confirm from '@/components/confirm'
+import Single from '@/components/single'
 import cognitoAuth from '@/cognito'
 Vue.use(Router)
 
@@ -31,6 +32,7 @@ function logout(to, from, next) {
 export default new Router({
   routes: [
     { path: '/', component: Home },
+    { path: '/img/:key', component: Single },
     { path: '/home', name: 'Home', component: Home },
     { path: '/login', name: 'Login', component: Login },
     { path: '/confirm', name: 'Confirm', component: Confirm },

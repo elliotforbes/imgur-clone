@@ -23,6 +23,18 @@
         "LogGroupName": "/aws/lambda/imgur-clone-functions-dev-single"
       }
     },
+    "TagNewImageLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/imgur-clone-functions-dev-tagNewImage"
+      }
+    },
+    "GenerateThumbnailLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/imgur-clone-functions-dev-generateThumbnail"
+      }
+    },
     "IamRoleLambdaExecution": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -71,6 +83,12 @@
                     },
                     {
                       "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/imgur-clone-functions-dev-single:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/imgur-clone-functions-dev-tagNewImage:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/imgur-clone-functions-dev-generateThumbnail:*"
                     }
                   ]
                 },
@@ -88,21 +106,14 @@
                     },
                     {
                       "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/imgur-clone-functions-dev-single:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/imgur-clone-functions-dev-tagNewImage:*:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/imgur-clone-functions-dev-generateThumbnail:*:*"
                     }
                   ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "dynamodb:DescribeTable",
-                    "dynamodb:Query",
-                    "dynamodb:Scan",
-                    "dynamodb:GetItem",
-                    "dynamodb:PutItem",
-                    "dynamodb:UpdateItem",
-                    "dynamodb:DeleteItem"
-                  ],
-                  "Resource": "arn:aws:dynamodb:eu-west-1:*:*"
                 },
                 {
                   "Effect": "Allow",
@@ -110,7 +121,22 @@
                     "s3:PutObject",
                     "S3:PutObjectAcl"
                   ],
-                  "Resource": "arn:aws:s3:::imgur-serverless/*"
+                  "Resource": "arn:aws:s3:::imgur-serverless-v2/*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "rekognition:*",
+                    "lambda:InvokeFunction"
+                  ],
+                  "Resource": "*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:*"
+                  ],
+                  "Resource": "*"
                 }
               ]
             }
@@ -137,7 +163,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/imgur-clone-functions/dev/1519311563044-2018-02-22T14:59:23.044Z/imgur-clone-functions.zip"
+          "S3Key": "serverless/imgur-clone-functions/dev/1519557085459-2018-02-25T11:11:25.459Z/imgur-clone-functions.zip"
         },
         "FunctionName": "imgur-clone-functions-dev-uploadjs",
         "Handler": "getSignedUpload.requestUploadURL",
@@ -149,21 +175,26 @@
           ]
         },
         "Runtime": "nodejs6.10",
-        "Timeout": 6
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "BUCKET": "imgur-serverless-v2"
+          }
+        }
       },
       "DependsOn": [
         "UploadjsLogGroup",
         "IamRoleLambdaExecution"
       ]
     },
-    "UploadjsLambdaVersion1DVKbQLLRq8Hd4dnz6zW2cJjTh7tK1AtHlIP9yalDQ": {
+    "UploadjsLambdaVersionjn8CrxfnYtDqlK3S3zUcgzqe2JitksSEdHrZXgR3dkk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UploadjsLambdaFunction"
         },
-        "CodeSha256": "W6BM2gxfBjEixIi2W9K/LwtEXmHTia6s9QWoHZiQa/Y="
+        "CodeSha256": "hSgTz4eN3NaU+9/3nrN/RCqkgsxMYlUTMGj1u5VNKQc="
       }
     },
     "ListLambdaFunction": {
@@ -173,7 +204,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/imgur-clone-functions/dev/1519311563044-2018-02-22T14:59:23.044Z/imgur-clone-functions.zip"
+          "S3Key": "serverless/imgur-clone-functions/dev/1519557085459-2018-02-25T11:11:25.459Z/imgur-clone-functions.zip"
         },
         "FunctionName": "imgur-clone-functions-dev-list",
         "Handler": "list.list",
@@ -185,21 +216,27 @@
           ]
         },
         "Runtime": "python3.6",
-        "Timeout": 6
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "BUCKET": "imgur-serverless-v2",
+            "TABLE": "img-posts"
+          }
+        }
       },
       "DependsOn": [
         "ListLogGroup",
         "IamRoleLambdaExecution"
       ]
     },
-    "ListLambdaVersion9aD9WLxWUtP3HvWxZHJ5V09yzTsl39LjWRY9q70M7Gg": {
+    "ListLambdaVersion73GdHM27yhrFzrrmzRKyNwMpcbCm2ipAthf36k2yjY": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ListLambdaFunction"
         },
-        "CodeSha256": "W6BM2gxfBjEixIi2W9K/LwtEXmHTia6s9QWoHZiQa/Y="
+        "CodeSha256": "hSgTz4eN3NaU+9/3nrN/RCqkgsxMYlUTMGj1u5VNKQc="
       }
     },
     "SingleLambdaFunction": {
@@ -209,7 +246,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/imgur-clone-functions/dev/1519311563044-2018-02-22T14:59:23.044Z/imgur-clone-functions.zip"
+          "S3Key": "serverless/imgur-clone-functions/dev/1519557085459-2018-02-25T11:11:25.459Z/imgur-clone-functions.zip"
         },
         "FunctionName": "imgur-clone-functions-dev-single",
         "Handler": "single.single",
@@ -228,14 +265,135 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "SingleLambdaVersion83GIOYoJmwqJ2mySrz0FBNIlSccyD9RUrhAGF0IXqI": {
+    "SingleLambdaVersionA5AanKPyIlrKstSgM2tGkuEoCp8ydyqyvfAZzYfNljk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "SingleLambdaFunction"
         },
-        "CodeSha256": "W6BM2gxfBjEixIi2W9K/LwtEXmHTia6s9QWoHZiQa/Y="
+        "CodeSha256": "hSgTz4eN3NaU+9/3nrN/RCqkgsxMYlUTMGj1u5VNKQc="
+      }
+    },
+    "TagNewImageLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/imgur-clone-functions/dev/1519557085459-2018-02-25T11:11:25.459Z/imgur-clone-functions.zip"
+        },
+        "FunctionName": "imgur-clone-functions-dev-tagNewImage",
+        "Handler": "tagNewImage.tagImage",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.6",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "TABLE": "img-posts",
+            "BUCKET": "imgur-serverless-v2"
+          }
+        }
+      },
+      "DependsOn": [
+        "TagNewImageLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "TagNewImageLambdaVersionLYmsNCo7T2O5LF4xLxiowKGiTsLlnsORirON34euM": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "TagNewImageLambdaFunction"
+        },
+        "CodeSha256": "hSgTz4eN3NaU+9/3nrN/RCqkgsxMYlUTMGj1u5VNKQc="
+      }
+    },
+    "GenerateThumbnailLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/imgur-clone-functions/dev/1519557085459-2018-02-25T11:11:25.459Z/imgur-clone-functions.zip"
+        },
+        "FunctionName": "imgur-clone-functions-dev-generateThumbnail",
+        "Handler": "thumbnail.generate",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "python3.6",
+        "Timeout": 6
+      },
+      "DependsOn": [
+        "GenerateThumbnailLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "GenerateThumbnailLambdaVersion0TZkQwyupkIuON1tup2Q0Nv0vB4SgA5643mqcn0EZbs": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "GenerateThumbnailLambdaFunction"
+        },
+        "CodeSha256": "hSgTz4eN3NaU+9/3nrN/RCqkgsxMYlUTMGj1u5VNKQc="
+      }
+    },
+    "S3BucketImgurserverlessv2": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "imgur-serverless-v2",
+        "NotificationConfiguration": {
+          "LambdaConfigurations": [
+            {
+              "Event": "s3:ObjectCreated:*",
+              "Function": {
+                "Fn::GetAtt": [
+                  "TagNewImageLambdaFunction",
+                  "Arn"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "DependsOn": [
+        "TagNewImageLambdaPermissionImgurserverlessv2S3"
+      ]
+    },
+    "TagNewImageLambdaPermissionImgurserverlessv2S3": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "TagNewImageLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "s3.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:s3:::imgur-serverless-v2"
+            ]
+          ]
+        }
       }
     },
     "ApiGatewayRestApi": {
@@ -568,7 +726,7 @@
         ]
       }
     },
-    "ApiGatewayDeployment1519311563060": {
+    "ApiGatewayDeployment1519557085477": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -691,19 +849,31 @@
     "UploadjsLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UploadjsLambdaVersion1DVKbQLLRq8Hd4dnz6zW2cJjTh7tK1AtHlIP9yalDQ"
+        "Ref": "UploadjsLambdaVersionjn8CrxfnYtDqlK3S3zUcgzqe2JitksSEdHrZXgR3dkk"
       }
     },
     "ListLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ListLambdaVersion9aD9WLxWUtP3HvWxZHJ5V09yzTsl39LjWRY9q70M7Gg"
+        "Ref": "ListLambdaVersion73GdHM27yhrFzrrmzRKyNwMpcbCm2ipAthf36k2yjY"
       }
     },
     "SingleLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SingleLambdaVersion83GIOYoJmwqJ2mySrz0FBNIlSccyD9RUrhAGF0IXqI"
+        "Ref": "SingleLambdaVersionA5AanKPyIlrKstSgM2tGkuEoCp8ydyqyvfAZzYfNljk"
+      }
+    },
+    "TagNewImageLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "TagNewImageLambdaVersionLYmsNCo7T2O5LF4xLxiowKGiTsLlnsORirON34euM"
+      }
+    },
+    "GenerateThumbnailLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "GenerateThumbnailLambdaVersion0TZkQwyupkIuON1tup2Q0Nv0vB4SgA5643mqcn0EZbs"
       }
     },
     "ServiceEndpoint": {

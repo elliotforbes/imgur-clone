@@ -6,7 +6,7 @@ nav {
     background-color: #242F3D;
     border: none;
     box-shadow: none;
-    margin-bottom: 80px;
+    margin-bottom: 20px;
 }
 nav .brand-logo {
     margin-left: 10px;
@@ -41,6 +41,7 @@ nav i {
     height: auto;
     box-shadow: 0px 0px 5px #E4E6E7;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 .img-card img {
@@ -49,11 +50,14 @@ nav i {
 }
 
 .img-card .info {
-    padding: 20px 30px;
+    padding: 10px 10px;
+    overflow: hidden;
 }
 .img-card .info h4 {
     font-size: 18px;
     font-weight: 800;
+    padding: 0;
+    margin: 0;
     margin-bottom: 5px;
 }
 .img-card .info p {
